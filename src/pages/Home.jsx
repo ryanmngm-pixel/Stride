@@ -1,10 +1,8 @@
-import { useEffect } from "react";
 import BottomNav from "../components/BottomNav";
 import NetWorthChart from "../components/NetWorthChart";
-import supabase from "../lib/supabase";
+import PlaidConnect from "../components/PlaidConnect";
 
 export default function Home() {
-
   return (
     <>
       <div className="phone-screen">
@@ -15,9 +13,7 @@ export default function Home() {
             <p className="gain">+$382.12 this month</p>
           </div>
 
-          <div className="profile-circle">
-            R
-          </div>
+          <div className="profile-circle">R</div>
         </div>
 
         <NetWorthChart />
@@ -39,9 +35,7 @@ export default function Home() {
           </div>
         </div>
 
-        <button className="connect-button">
-          Connect Account
-        </button>
+        <PlaidConnect />
 
         <div className="section">
           <h3>Accounts</h3>
