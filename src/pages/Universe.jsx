@@ -1,146 +1,204 @@
-import { Canvas } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
-import Galaxy from "../components/Galaxy";
+import { supabase } from "../lib/supabase";
 
-const nodes = [
-  {
-    label: "GOALS",
-    position: [0, 4.2, 0],
-    textPosition: [0, 3.5, 0],
-    color: "#a855f7",
-  },
-  {
-    label: "ACCOUNTS",
-    position: [-4.8, 1.8, 0],
-    textPosition: [-4.8, 1.1, 0],
-    color: "#3b82f6",
-  },
-  {
-    label: "INCOME",
-    position: [4.8, 1.8, 0],
-    textPosition: [4.8, 1.1, 0],
-    color: "#22c55e",
-  },
-  {
-    label: "DEBT",
-    position: [-4.2, -3.2, 0],
-    textPosition: [-4.2, -3.9, 0],
-    color: "#ef4444",
-  },
-  {
-    label: "SPENDING",
-    position: [4.2, -3.2, 0],
-    textPosition: [4.2, -3.9, 0],
-    color: "#f97316",
-  },
-  {
-    label: "SETTINGS",
-    position: [0, -4.9, 0],
-    textPosition: [0, -5.6, 0],
-    color: "#94a3b8",
-  },
-];
+import FinanceRow from "../components/FinanceRow";
+import GoalsContent from "../components/GoalsContent";
+import AccountsContent from "../components/AccountsContent";
+
+import { useState } from "react";
 
 export default function Universe() {
+  const [goals, setGoals] =
+    useState([
+      {
+        id: 1,
+        title: "Emergency Fund",
+        progress: 65,
+      },
+      {
+        id: 2,
+        title: "New Car Fund",
+        progress: 22,
+      },
+    ]);
+
+  const [accounts, setAccounts] =
+    useState([]);
+
+  const netWorth =
+    accounts.reduce(
+      (
+        total,
+        account
+      ) =>
+        total +
+        (account.balance || 0),
+      0
+    );
+
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
+        minHeight: "100vh",
         background: "#000",
-        overflow: "hidden",
-        position: "relative",
+        color: "#fff",
+        padding: "2rem",
+        maxWidth: "500px",
+        margin: "0 auto",
+        fontFamily:
+          "-apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
-      <Canvas
-        orthographic
-        camera={{
-          zoom: 70,
-          position: [0, 0, 10],
-        }}
-      >
-        {/* Core Galaxy */}
-        <Galaxy
-          count={3000}
-          radius={1.6}
-          position={[0, 0, 0]}
-          color="#ffffff"
-          size={0.018}
-        />
-
-        {/* Outer Galaxies */}
-        {nodes.map((node) => (
-          <Galaxy
-            key={node.label}
-            count={180}
-            radius={0.32}
-            position={node.position}
-            color={node.color}
-            size={0.02}
-          />
-        ))}
-
-        {/* Labels */}
-        {nodes.map((node) => (
-          <Html
-            key={node.label}
-            position={node.textPosition}
-            center
-          >
-            <div
-              style={{
-                color: "rgba(255,255,255,0.75)",
-                fontSize: "11px",
-                fontWeight: 700,
-                letterSpacing: "0.18em",
-                whiteSpace: "nowrap",
-                textTransform: "uppercase",
-                pointerEvents: "none",
-                userSelect: "none",
-              }}
-            >
-              {node.label}
-            </div>
-          </Html>
-        ))}
-      </Canvas>
-
-      {/* Center UI */}
       <div
         style={{
-          position: "absolute",
-          inset: 0,
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+          justifyContent:
+            "space-between",
           alignItems: "center",
-          pointerEvents: "none",
-          fontFamily:
-            "-apple-system, BlinkMacSystemFont, sans-serif",
+          marginBottom: "2rem",
         }}
       >
         <div
           style={{
-            color: "#fff",
-            fontSize: "clamp(2.8rem, 12vw, 4.5rem)",
+            opacity: 0.45,
+            fontSize: ".9rem",
+          }}
+        >
+          Logic
+        </div>
+
+        <button
+          onClick={() =>
+            supabase.auth.signOut()
+          }
+          style={{
+            border:
+              "1px solid rgba(255,255,255,.08)",
+            background:
+              "rgba(255,255,255,.03)",
+            color:
+              "rgba(255,255,255,.7)",
+            borderRadius:
+              "999px",
+            padding:
+              ".55rem 1rem",
+            cursor: "pointer",
+          }}
+        >
+          Logout
+        </button>
+      </div>
+
+      <div
+        style={{
+          marginBottom: "3rem",
+        }}
+      >
+        <div
+          style={{
+            fontSize:
+              "clamp(3rem, 12vw, 5rem)",
             fontWeight: 300,
-            letterSpacing: "-0.05em",
+            letterSpacing:
+              "-0.06em",
             lineHeight: 1,
           }}
         >
-          $4,291
+          $
+          {netWorth.toLocaleString()}
         </div>
 
         <div
           style={{
-            marginTop: "0.4rem",
-            color: "rgba(255,255,255,0.45)",
-            fontSize: "0.9rem",
+            opacity: 0.45,
+            marginTop: "0.5rem",
+            fontSize: "0.95rem",
           }}
         >
           Net Worth
         </div>
       </div>
+
+      <FinanceRow
+        label="Income"
+        value="$0"
+        color="#22c55e"
+      >
+        <div
+          style={{
+            paddingTop: "1rem",
+          }}
+        >
+          Income data coming
+          from Plaid.
+        </div>
+      </FinanceRow>
+
+      <FinanceRow
+        label="Spending"
+        value="$0"
+        color="#f97316"
+      >
+        <div
+          style={{
+            paddingTop: "1rem",
+          }}
+        >
+          Spending data coming
+          from Plaid.
+        </div>
+      </FinanceRow>
+
+      <FinanceRow
+        label="Debt"
+        value="$0"
+        color="#ef4444"
+      >
+        <div
+          style={{
+            paddingTop: "1rem",
+          }}
+        >
+          Debt data coming
+          from Plaid.
+        </div>
+      </FinanceRow>
+
+      <FinanceRow
+        label="Goals"
+        value={`${goals.length} Active`}
+        color="#8b5cf6"
+      >
+        <GoalsContent
+          goals={goals}
+          setGoals={setGoals}
+        />
+      </FinanceRow>
+
+      <FinanceRow
+        label="Accounts"
+        value={`${accounts.length}`}
+        color="#3b82f6"
+      >
+        <AccountsContent
+          accounts={accounts}
+          setAccounts={
+            setAccounts
+          }
+        />
+      </FinanceRow>
+
+      <FinanceRow
+        label="Settings"
+        color="#94a3b8"
+      >
+        <div
+          style={{
+            paddingTop: "1rem",
+          }}
+        >
+          Settings coming next.
+        </div>
+      </FinanceRow>
     </div>
   );
 }
