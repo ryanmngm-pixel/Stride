@@ -4,19 +4,38 @@ import supabase from "../lib/supabase";
 
 export default function PlaidConnect() {
   const [linkToken, setLinkToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getLinkToken() {
-      const { data, error } = await supabase.functions.invoke(
-        "create-link-token"
-      );
+      try {
+        console.log("Requesting Plaid link token...");
 
-      if (error) {
-        console.error(error);
-        return;
+        const { data, error } = await supabase.functions.invoke(
+          "create-link-token"
+        );
+
+        if (error) {
+          console.error("Supabase Function Error:", error);
+          alert(`Function Error:\n${JSON.stringify(error, null, 2)}`);
+          return;
+        }
+
+        console.log("Function Response:", data);
+
+        if (!data?.link_token) {
+          console.error("No link token returned:", data);
+          alert("No link token returned from function.");
+          return;
+        }
+
+        setLinkToken(data.link_token);
+      } catch (err) {
+        console.error("Unexpected Error:", err);
+        alert(`Unexpected Error:\n${err.message}`);
+      } finally {
+        setLoading(false);
       }
-
-      setLinkToken(data.link_token);
     }
 
     getLinkToken();
@@ -24,7 +43,7 @@ export default function PlaidConnect() {
 
   const onSuccess = useCallback(async (public_token, metadata) => {
     console.log("Public Token:", public_token);
-    console.log(metadata);
+    console.log("Metadata:", metadata);
 
     alert("Bank connected successfully!");
   }, []);
@@ -37,10 +56,14 @@ export default function PlaidConnect() {
   return (
     <button
       className="connect-button"
-      disabled={!ready}
+      disabled={!ready || loading}
       onClick={() => open()}
     >
-      {ready ? "Connect Bank" : "Loading..."}
+      {loading
+        ? "Loading..."
+        : ready
+        ? "Connect Bank"
+        : "Failed to Load"}
     </button>
   );
 }

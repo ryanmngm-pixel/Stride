@@ -1,0 +1,181 @@
+.universe {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+  color: white;
+  font-family: Inter, sans-serif;
+}
+
+/* ---------- DRIFTING STARFIELD ---------- */
+
+.stars {
+  position: absolute;
+  inset: -200px;
+  background-image:
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 60px 60px;
+
+  opacity: 0.15;
+
+  animation: drift 120s linear infinite;
+}
+
+@keyframes drift {
+  from {
+    transform: translate(0px, 0px);
+  }
+
+  to {
+    transform: translate(-120px, -80px);
+  }
+}
+
+/* ---------- CENTER CORE ---------- */
+
+.core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.core-orb {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+
+  background: white;
+
+  margin: 0 auto 20px;
+
+  animation: corePulse 6s ease-in-out infinite;
+
+  box-shadow:
+    0 0 25px white,
+    0 0 60px rgba(255,255,255,.8),
+    0 0 120px rgba(255,255,255,.4);
+}
+
+@keyframes corePulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.core-value {
+  position: absolute;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3.5rem;
+  font-weight: 700;
+}
+
+.core-label {
+  letter-spacing: 6px;
+  opacity: .5;
+  font-size: .75rem;
+}
+
+.selected-label {
+  margin-top: 20px;
+  opacity: .8;
+}
+
+/* ---------- GALAXIES ---------- */
+
+.galaxy {
+  position: absolute;
+
+  transform: translate(-50%, -50%);
+
+  background: transparent;
+  border: none;
+
+  color: white;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+
+  opacity: .45;
+
+  transition: all .35s ease;
+}
+
+.galaxy:hover {
+  opacity: .9;
+}
+
+.galaxy.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.25);
+}
+
+.galaxy-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+
+  background: white;
+
+  animation: galaxyPulse 4s ease-in-out infinite;
+
+  box-shadow:
+    0 0 12px white,
+    0 0 35px white,
+    0 0 80px rgba(255,255,255,.5);
+}
+
+@keyframes galaxyPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- CONNECTION LINES ---------- */
+
+.connection {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  height: 1px;
+
+  background: rgba(255,255,255,.15);
+
+  transform-origin: left center;
+
+  pointer-events: none;
+}
+
+/* ---------- LABELS ---------- */
+
+.galaxy span {
+  font-size: 1rem;
+  opacity: .8;
+}
