@@ -208,7 +208,7 @@ export default function App() {
             {Array.from({ length: 4 }, (_, i) => (
               <span className="ticker-item" key={i}>
                 A NEW WAY FORWARD <span>✳</span>
-                COMING SOON <span>✳</span>
+                COMING SOON <span>✳︎</span>
               </span>
             ))}
           </div>
@@ -246,7 +246,7 @@ export default function App() {
           </Reveal>
 
           <div className="manifesto-decoration" aria-hidden="true">
-            <span>✳</span>
+            <span>✳︎</span>
           </div>
         </section>
 
@@ -274,7 +274,7 @@ export default function App() {
               <div className="thought-card">
                 <div className="thought-top">
                   <span>PRINCIPLE / {thoughts[activeThought].number}</span>
-                  <span className="thought-star">✳</span>
+                  <span className="thought-star">✳︎</span>
                 </div>
 
                 <div className="thought-center" key={activeThought}>
@@ -366,7 +366,7 @@ export default function App() {
               aria-expanded={surprise}
             >
               <span className="stamp-text">GOOD THINGS TAKE TIME</span>
-              <span className="stamp-center">{surprise ? "♥" : "✳"}</span>
+              <span className="stamp-center">{surprise ? "♥" : "✳︎"}</span>
               <span className="stamp-bottom">
                 {surprise ? "THANKS FOR BEING EARLY" : "TAP ME"}
               </span>
