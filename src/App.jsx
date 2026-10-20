@@ -323,7 +323,7 @@ export default function App() {
               <br />
               <em>IT'S MADE.</em>
             </h2>
-            <div className="interlude-symbol" aria-hidden="true">✳</div>
+            <div className="interlude-symbol" aria-hidden="true">✳︎</div>
           </Reveal>
         </section>
 
